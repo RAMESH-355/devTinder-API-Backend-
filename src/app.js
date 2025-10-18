@@ -6,6 +6,9 @@ const connectDB = require("./Config/database");
 const User = require("./models/user");
 const cors = require("cors");
 
+const http = require("http");
+const Server = http.createServer(app);
+
 app.use(cors
     ({
     origin: "http://localhost:5173",
@@ -19,6 +22,9 @@ const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
 const userRouter = require("./routes/user");
+const initializeSocket = require("./utils/socket");
+
+initializeSocket(Server);
 
 app.use("/", authRouter);
 app.use("/", profileRouter);
@@ -114,7 +120,7 @@ app.patch("/update/:userId", async(req,res) => {
 connectDB()
     .then(() => {
             console.log("Database connected successfully");
-            app.listen(5123,() => {
+            Server.listen(5123,() => {
                 console.log("Server sent an request, successfully!");
             });
     }
