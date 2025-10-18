@@ -14,7 +14,7 @@ Old consfig
     "javascript"
   ],
   "author": "Ramesh Valle",
-  "license": "ISC",
+  "licensegit": "ISC",
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
