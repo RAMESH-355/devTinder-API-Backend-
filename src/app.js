@@ -9,11 +9,18 @@ const cors = require("cors");
 const http = require("http");
 const Server = http.createServer(app);
 
+app.use(cors({
+  origin: "https://devtinder-web.onrender.com",
+  credentials: true
+}));
+
+/*
 app.use(cors
     ({
     origin: "http://localhost:5173",
     credentials: true
 }));
+*/
 
 app.use(express.json());
 app.use(cookieParser());
@@ -127,7 +134,8 @@ connectDB()
     
     )
     .catch((err) => {
-            console.log("Database connection failed ");
+            console.log("Database connection failed ",err.message);
+            process.exit(1);
         });
 
 
