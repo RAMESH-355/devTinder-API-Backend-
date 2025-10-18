@@ -10,9 +10,13 @@ const http = require("http");
 const Server = http.createServer(app);
 
 app.use(cors({
-  origin: "https://devtinder-web.onrender.com",
+  origin: [
+    "http://localhost:5173",
+    "https://devtinder-web-3yd2.onrender.com"
+  ],
   credentials: true
 }));
+
 
 /*
 app.use(cors
