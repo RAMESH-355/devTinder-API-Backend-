@@ -7,32 +7,6 @@ const userRouter = express.Router();
 
 const USER_SAFE_DATA = "firstName lastName age photoURL skills gender about"
 
-/*
-
-userRouter.get("/user/requests/received",userAuth, async (req,res) => {
-    try{
-        const loggedInUser = req.user; 
-
-    const connectionRequests = await connectionRequest.find({
-        toUserId: loggedInUser._id,
-        status: "interested"
-    }).populate("fromUserId", ["firstName", "lastName", "photoURL", "age", "gender", "about"]);
-
-    if (!connectionRequests || connectionRequests.length === 0) {
-    return res.json({ message: "No connection requests", connectionRequests: [] });
-}
-
-    res.json({
-        message: "Data fetched successfully",
-        connectionRequests
-    });
-    }
-    catch (err) {
-        return res.status(400).json({message: "ERROR: Some thing went wrong " });
-    }
-}); 
-*/
-
 userRouter.get("/user/requests/received", userAuth, async (req,res) => {
   try{
       const loggedInUser = req.user; 
@@ -85,40 +59,6 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
     res.status(500).json({ message: "ERROR: " + err.message });
   }
 });
-
-
-/*
-userRouter.get("/user/connections",userAuth, async (req,res) => {
-    try{
-        const loggedInUser = req.user; 
-
-    const userConnections = await connectionRequest.find({
-        $or: [
-            {toUserId: loggedInUser._id, status: "interested"},
-            {fromUserId: loggedInUser._id, status: "interested"}
-        ]
-    }).populate("fromUserId", USER_SAFE_DATA)
-      .populate("fromUserId", USER_SAFE_DATA);
-
-
-    if (!userConnections) {
-        return res.send("No connection requests"); 
-    }
-
-    const data = userConnections.map((row) => {
-        if (row.fromUserId._id.toString() === loggedInUser._id.toString()){
-            return row.toUserId;
-        }
-        return row.fromUserId;
-    });
-
-        res.json({ data });
-    }
-    catch (err) {
-        return res.status(400).send( "ERROR: " + err.message );
-    }
-}); 
-*/
 
 userRouter.get("/user/feed",userAuth, async (req,res) => {
     try {

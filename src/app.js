@@ -6,13 +6,21 @@ const User = require("./models/user");
 const cors = require("cors");
 
 const http = require("http");
-const Server = http.createServer(app);
+const server = http.createServer(app);
+
+/*
+app.use(
+  cors({
+    origin: "http://localhost:5123",
+    credentials: true,
+  })
+);
+*/
 
 const allowedOrigins = [
   "http://localhost:5173",
   "https://devtinder-web-3yd2.onrender.com"
 ];
-
 
 app.use(
   cors({
@@ -30,6 +38,7 @@ app.use(
 );
 
 
+
 app.use(express.json());
 app.use(cookieParser());
 
@@ -38,14 +47,15 @@ const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
 const userRouter = require("./routes/user");
 const initializeSocket = require("./utils/socket");
+const chatRouter = require("./routes/chat");
 
-initializeSocket(Server);
+initializeSocket(server);
 
 app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", requestRouter);
 app.use("/", userRouter);
-
+app.use("/", chatRouter);
 
 app.get("/user", async (req,res) => {
 
@@ -135,7 +145,7 @@ app.patch("/update/:userId", async(req,res) => {
 connectDB()
     .then(() => {
             console.log("Database connected successfully");
-            Server.listen(5123,() => {
+            server.listen(5123,() => {
                 console.log("Server sent an request, successfully!");
             });
     }
@@ -145,6 +155,3 @@ connectDB()
             console.log("Database connection failed ",err.message);
             process.exit(1);
         });
-
-
-
