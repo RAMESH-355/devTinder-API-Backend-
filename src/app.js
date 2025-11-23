@@ -59,6 +59,15 @@ app.use("/", requestRouter);
 app.use("/", userRouter);
 app.use("/", chatRouter);
 
+app.get('/', (req, res) => {
+  res.send('Backend is running successfully');
+});
+
+app.get('/api', (req, res) => {
+  res.send('API Route is working');
+});
+
+
 app.get("/user", async (req,res) => {
 
     const userEmail = req.body.emailId;
