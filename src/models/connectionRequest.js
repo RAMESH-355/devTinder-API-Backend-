@@ -22,11 +22,10 @@ const connectionRequestSchema = new mongoose.Schema(
     },
   },
   {
-    timestamps: true, // optional but helps track requests
+    timestamps: true,
   }
 );
 
-// Prevent self-connection
 connectionRequestSchema.pre("save", function (next) {
   if (this.fromUserId.equals(this.toUserId)) {
     throw new Error("Self connection is not valid");

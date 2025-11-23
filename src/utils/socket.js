@@ -3,11 +3,6 @@ const crypto = require("crypto");
 const { Chat } = require("../models/chat");
 const ConnectionRequest = require("../models/connectionRequest");
 
-
-// -------------------------------------------
-// Create a secret unique room ID for 2 users
-// Ensures same room for same pair
-// -------------------------------------------
 const getSecretRoomId = (userId, targetUserId) => {
     return crypto
         .createHash("sha256")
@@ -15,10 +10,6 @@ const getSecretRoomId = (userId, targetUserId) => {
         .digest("hex");
 };
 
-
-// -------------------------------------------
-// Initialize socket
-// -------------------------------------------
 const initializeSocket = (server) => {
 
     const io = socket(server, {
@@ -30,38 +21,30 @@ const initializeSocket = (server) => {
 
 
     io.on("connection", (socket) => {
-        console.log("⚡ New socket connected:", socket.id);
+        console.log("New socket connected:", socket.id);
 
 
-        // -------------------------------------------
-        // JOIN CHAT ROOM
-        // -------------------------------------------
         socket.on("joinChat", ({ userId, targetUserId }) => {
             if (!userId || !targetUserId) {
-                console.error("❌ Missing userId / targetUserId in joinChat");
+                console.error("Missing userId / targetUserId in joinChat");
                 return;
             }
 
             const roomId = getSecretRoomId(userId, targetUserId);
             socket.join(roomId);
 
-            console.log(`👥 User ${userId} joined room ${roomId}`);
+            console.log(`User ${userId} joined room ${roomId}`);
         });
 
-
-
-        // -------------------------------------------
-        // RECEIVE MESSAGE + SAVE TO DB + SEND BACK
-        // -------------------------------------------
         socket.on("sendMessage", async ({ firstName, lastName, userId, targetUserId, text }) => {
             try {
                 if (!userId || !targetUserId || !text) {
-                    console.error("❌ Missing data in sendMessage");
+                    console.error("Missing data in sendMessage");
                     return;
                 }
 
                 const roomId = getSecretRoomId(userId, targetUserId);
-                console.log(`💬 Message from ${userId}: "${text}"`);
+                console.log(`Message from ${userId}: "${text}"`);
 
 
                 // 1. Find chat
@@ -94,15 +77,10 @@ const initializeSocket = (server) => {
                 });
 
             } catch (err) {
-                console.error("❌ Error processing sendMessage:", err);
+                console.error("Error processing sendMessage:", err);
             }
         });
 
-
-
-        // -------------------------------------------
-        // DISCONNECT
-        // -------------------------------------------
         socket.on("disconnect", () => {
             console.log("🔌 Socket disconnected:", socket.id);
         });

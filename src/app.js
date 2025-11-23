@@ -8,10 +8,12 @@ const cors = require("cors");
 const http = require("http");
 const server = http.createServer(app);
 
+require("dotenv").config();
+
 /*
 app.use(
   cors({
-    origin: "http://localhost:5123",
+    origin: "http://localhost:5173",
     credentials: true,
   })
 );
@@ -145,7 +147,7 @@ app.patch("/update/:userId", async(req,res) => {
 connectDB()
     .then(() => {
             console.log("Database connected successfully");
-            server.listen(5123,() => {
+            server.listen(process.env.PORT,() => {
                 console.log("Server sent an request, successfully!");
             });
     }
