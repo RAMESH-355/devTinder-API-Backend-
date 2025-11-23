@@ -147,7 +147,7 @@ app.patch("/update/:userId", async(req,res) => {
 connectDB()
     .then(() => {
             console.log("Database connected successfully");
-            server.listen(process.env.PORT,() => {
+            server.listen(process.env.PORT,'0.0.0.0',() => {
                 console.log("Server sent an request, successfully!");
             });
     }
