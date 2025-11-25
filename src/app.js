@@ -3,24 +3,42 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const connectDB = require("./Config/database");
 const User = require("./models/user");
-const cors = require("cors");
 
 const http = require("http");
 const server = http.createServer(app);
 
+const cors = require("cors");
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://dev-tinder-web-blue.vercel.app",
+];
+
+const corsOptions = {
+  origin(origin, callback) {
+    console.log("CORS check origin:", origin);
+
+    // allow Postman / curl / server-to-server (no Origin header)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    console.log("CORS BLOCKED:", origin);
+    return callback(new Error("Not allowed by CORS"));
+  },
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+
+
 require("dotenv").config();
 
 /*
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-  })
-);
-*/
 
 const allowedOrigins = new Set([
-  // local dev
   "http://localhost:5173",
   "https://dev-tinder-web-blue.vercel.app/"
 ]);
@@ -39,6 +57,7 @@ app.use(
     credentials: true,
   })
 );
+*/
 
 
 
