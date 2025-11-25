@@ -22,16 +22,7 @@ app.use(
 const allowedOrigins = new Set([
   // local dev
   "http://localhost:5173",
-  "http://127.0.0.1:5173",
-  "https://devtinder-web-3yd2.onrender.com",
-
-  // deployed frontend - HTTP
-  "http://100.27.189.2",
-  "http://ec2-100-27-189-2.compute-1.amazonaws.com",
-
-  // future HTTPS (harmless even if not using yet)
-  "https://100.27.189.2",
-  "https://ec2-100-27-189-2.compute-1.amazonaws.com",
+  "https://dev-tinder-web-blue.vercel.app/"
 ]);
 
 app.use(
