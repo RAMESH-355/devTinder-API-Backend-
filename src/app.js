@@ -21,7 +21,10 @@ app.use(
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://devtinder-web-3yd2.onrender.com"
+  "http://127.0.0.1:5173",
+  "https://devtinder-web-3yd2.onrender.com",
+  "http://100.27.189.2",
+  "http://ec2-100-27-189-2.compute-1.amazonaws.com",
 ];
 
 app.use(
