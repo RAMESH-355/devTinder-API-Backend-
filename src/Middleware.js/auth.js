@@ -3,26 +3,34 @@ const User = require("../models/user");
 
 const userAuth = async (req, res, next) => {
   try {
-    const { token } = req.cookies;
+    const token = req.cookies?.token;
 
     if (!token) {
       return res.status(401).json({
         success: false,
-        message: "Token is not valid. Please login again.",
+        message: "Token is missing. Please login again.",
       });
     }
 
-    const decoded = jwt.verify(token, "Dev@tinder#132");
+    // Use the same secret you use in user.getJWT()
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     const user = await User.findById(decoded._id);
     if (!user) {
-      return res.status(401).json({ success: false, message: "User not found" });
+      return res.status(401).json({
+        success: false,
+        message: "User not found",
+      });
     }
 
     req.user = user;
     next();
   } catch (err) {
-    return res.status(400).json({ success: false, error: err.message });
+    console.error("Auth error:", err.message);
+    return res.status(401).json({
+      success: false,
+      message: "Invalid or expired token. Please login again.",
+    });
   }
 };
 
